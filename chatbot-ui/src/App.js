@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [model, setModel] = useState("llama3.1"); // default model
+  const [model, setModel] = useState("llama3.1");
   const [isTyping, setIsTyping] = useState(false);
   const chatAreaRef = useRef(null);
 
@@ -28,7 +28,6 @@ export default function App() {
       const decoder = new TextDecoder();
       let partial = "";
 
-      // Add an initial "typing..." message
       setMessages((prev) => [...prev, { role: "bot", content: "" }]);
 
       while (true) {
@@ -42,7 +41,6 @@ export default function App() {
           return copy;
         });
 
-        // auto scroll
         if (chatAreaRef.current) {
           chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
         }
@@ -60,7 +58,6 @@ export default function App() {
   return (
     <div style={styles.page}>
       <div style={styles.chatWindow}>
-        {/* Header with logo and model selector */}
         <div style={styles.header}>
           <div style={styles.headerLeft}>
             <img src="/bot-icon.png" alt="Bot" style={styles.icon} />
@@ -72,12 +69,11 @@ export default function App() {
             style={styles.modelSelect}
             disabled={isTyping}
           >
-            <option value="llama3.1">llama3.1</option>
-            <option value="deepseek-r1:8b">deepseek-r1:8b</option>
+            <option value="llama3.1">Llama 3.1</option>
+            <option value="deepseek-r1:8b">DeepSeek-R1</option>
           </select>
         </div>
 
-        {/* Chat messages */}
         <div style={styles.chatArea} ref={chatAreaRef}>
           {messages.map((msg, idx) => (
             <div
@@ -94,7 +90,6 @@ export default function App() {
           ))}
         </div>
 
-        {/* Input area */}
         <div style={styles.inputArea}>
           <input
             value={input}

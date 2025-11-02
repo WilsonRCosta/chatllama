@@ -7,6 +7,7 @@ import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -17,6 +18,9 @@ import java.util.List;
 @JBossLog
 public class ChatService {
 
+    @Value("${chatbot.system.message}")
+    String systemMessage;
+
     private final OllamaChatModel ollamaChatModel;
 
     public ChatService(OllamaChatModel ollamaChatModel) {
@@ -25,9 +29,7 @@ public class ChatService {
 
     public Flux<String> ask(String input, String model) {
         List<Message> conversation = new ArrayList<>();
-        conversation.add(new SystemMessage(
-                "You are an experienced Portuguese accountant. Answer short and concise."));
-
+        conversation.add(new SystemMessage(systemMessage));
         conversation.add(new UserMessage(input));
 
         Prompt prompt = new Prompt(conversation, OllamaOptions.builder()
